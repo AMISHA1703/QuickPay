@@ -32,7 +32,7 @@ mongoose.connect(process.env.M_uri,{
 });
 const AccountSchema=new mongoose.Schema({
     userId:{
-        type:mongoose.Schema.Types.ObjectID,
+        type:mongoose.Schema.Types.ObjectId,
         ref:"User",
         require:true
     },

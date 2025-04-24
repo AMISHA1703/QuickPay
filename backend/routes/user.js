@@ -1,12 +1,15 @@
 const express = require("express");
 const router = express.Router();
-const z  = require("zod");
-const mongoose=require("mongoose")
-const jwt = require("jsonwebtoken");
-const { JWT_SECRET } = require("../config");
-const  {User}=require("../db.js")
-const {Account}=require("../db.js")
-const authMiddleware=require("../middlewares/middleware.js")
+const z = require("zod");
+const jwt = require("jsonwebtoken")
+const mongoose = require("mongoose")
+const dotenv = require("dotenv")
+dotenv.config()
+
+// const { JWT_SECRET } = require("../config");
+const { User } = require("../db.js")
+const { Account } = require("../db.js")
+const authMiddleware = require("../middlewares/middleware.js")
 
 
 const SignInSchema = z.object({
@@ -14,32 +17,37 @@ const SignInSchema = z.object({
     password: z.string()
 })
 router.post("/SignIn", async function (req, res) {
-    const { success } = SignInSchema.safeParse(req.body)
-    if (!success) {
-        return res.status(411).json({
-            messgae: "Incorrect Inputs"
+    try {
+        const { success } = SignInSchema.safeParse(req.body)
+        if (!success) {
+            return res.status(411).json({
+                messgae: "Incorrect Inputs"
+            })
+        }
+
+        const user = await User.findOne({
+            username: req.body.username,
+            password: req.body.password
         })
-    }
+        console.log(user)
+        if (user) {
+            const token = jwt.sign({
+                userId: user._id
+            }, process.env.JWT_SECRET);
 
-    const user = await User.findOne({
-        username: req.body.username,
-        password: req.body.password
-    })
+            console.log("token in signIn is ", token)
 
-    if (user) {
-        const token = jwt.sign({
-            userId: user._id
-        }, JWT_SECRET);
-
-
-        res.json({
-            token: token
-        })
-        return;
-    }
+            return (
+                res.json({
+                    token: token
+                }))
+        }
+    } catch (error) {
     res.status(411).json({
-        message: "Error While Logging in"
+        message: "Error While Logging in",
+        error: error
     })
+}
 
 
 })
@@ -77,16 +85,17 @@ router.post("/signUp", async (req, res) => {
         lastname: req.body.lastname,
         firstname: req.body.firstname
     })
-    const UserID = user._id;
+    const userId= user._id;
 
-   await Account.create({
-    UserID,
-    balance:1+Math.random()*10000
-})
+    await Account.create({
+        userId: user._id,
+        balance: 1 + Math.random() * 10000
+    })
+
 
     const token = jwt.sign({
-        UserID
-    }, JWT_SECRET)
+        userId
+    }, process.env.JWT_SECRET, { expiresIn: "15d" })
 
     res.json({
         message: "User created successfully",
@@ -104,7 +113,7 @@ const updateBody = z.object({
 router.put("/", async (req, res) => {
     const { success } = updateBody.safeParse(req.body)
     if (!success) {
-       return  res.status(411).json({
+        return res.status(411).json({
             message: "Error while updating Information"
         })
     }
@@ -137,13 +146,11 @@ router.get("/bulk", async (req, res) => {
     res.json({
         user: users.map(user => ({
             username: user.username,
-            firstName: user.firstName,
-            lastName: user.lastName,
+            firstname: user.firstname,
+            lastname: user.lastname,
             _id: user._id
-    }))
-  })
-
-
+        }))
+    })
 
 })
 

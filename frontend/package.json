@@ -11,9 +11,15 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.0.7",
+    "axios": "^1.8.4",
+    "build": "^0.1.4",
+    "dotenv": "^16.5.0",
+    "npm": "^10.9.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-icons": "^5.5.0",
     "react-router-dom": "^6.30.0",
+    "run": "^1.5.0",
     "tailwindcss": "^4.0.7"
   },
   "devDependencies": {

@@ -1,14 +1,21 @@
 {
+  "scripts":{
+    "start":"node index.js",
+    "dev":"nodemon index.js"
+  },
   "dependencies": {
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "express-router": "^0.0.1",
-    "jsonwebtoken": "^9.0.2",
+    "install": "^0.13.0",
+    "jsonwebtoken": "^8.5.1",
     "mogodb": "^0.0.1-security",
     "mongodb": "^6.13.1",
     "mongoose": "^8.12.1",
+    "nodemon": "^3.1.10",
+    "npm": "^10.9.2",
     "zod": "^3.24.2"
   }
 }
