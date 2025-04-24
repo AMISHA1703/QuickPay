@@ -1,11 +1,11 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Signup from "../pages/signup";
-import SignIn from "../pages/signIn";
-import Dashboard from "../pages/dashboard";
-import SendMoney from "../pages/sendMoney";
-import Homepage from "../pages/Homepage";
-import BlogPage from "../pages/Blog";
+import Signup from "./pages/signup";
+import SignIn from "./pages/signIn";
+import Dashboard from "./pages/dashboard";
+import SendMoney from "./pages/sendMoney";
+import Homepage from "./pages/Homepage";
+import BlogPage from "./pages/Blog";
 
 export default function App() {
   return (
