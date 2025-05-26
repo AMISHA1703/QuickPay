@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams,useLocation } from "react-router-dom";
 import axios from "axios";
 
 const SendMoney = () => {
@@ -9,6 +9,9 @@ const SendMoney = () => {
   const [amount, setAmount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const navigate=useNavigate();
+   const location = useLocation();
+  const { dashboarduname } = location.state || {};
 
   const handleTransfer = async () => {
     if (!amount || amount <= 0) {
@@ -37,6 +40,7 @@ const SendMoney = () => {
       setIsSuccess(true);
       setTimeout(() => setIsSuccess(false), 2000); // hides after 1 sec
 
+
     } catch (error) {
       console.log(error.response?.data?.message || error.message);
       alert(
@@ -48,6 +52,9 @@ const SendMoney = () => {
       
     }
   };
+   function returnBack(){
+      navigate("/dashboard?name=" + dashboarduname);
+  }
 
   return (
     <div className="flex justify-center items-center flex-col justify-items-normal h-screen  bg-gray-100">
@@ -114,6 +121,7 @@ const SendMoney = () => {
             </div>
           </div>
         </div>
+        <button className="bg-white text-xl text-blue-950 m-2 p-4 shadow-lg" onClick={returnBack}>Go back</button>
       </div>
     </div>
   );

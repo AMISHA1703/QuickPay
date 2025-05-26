@@ -3,7 +3,7 @@ import { Button } from "./Button";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-export const Users = () => {
+export const Users = ({dashboarduname}) => {
   // Replace with backend call
   const [users, setUsers] = useState([]);
   const [filter, setFilter] = useState("");
@@ -37,7 +37,7 @@ export const Users = () => {
           0 ? (
           users
             .filter((user) => user.firstname.includes(filter))
-            .map((user) => <User key={user.id} user={user} />)
+            .map((user) => <User key={user.id} user={user}  dashboarduname={dashboarduname}/>)
         ) : (
           <p className="p-2">No user found</p>
         )}
@@ -46,7 +46,7 @@ export const Users = () => {
   );
 };
 
-function User({ user }) {
+function User({ user ,dashboarduname}) {
   const navigate = useNavigate();
 
   return (
@@ -67,7 +67,7 @@ function User({ user }) {
       <div className="flex flex-col justify-center h-ful">
         <Button
           onClick={(e) => {
-            navigate("/send?id=" + user._id + "&name=" + user.firstname);
+            navigate("/send?id=" + user._id + "&name=" + user.firstname , { state: { dashboarduname } });
           }}
           label={"Send Money"}
         />

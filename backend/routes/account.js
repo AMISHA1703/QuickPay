@@ -20,10 +20,11 @@ router.get("/balance",authMiddleware,async (req,res)=>{
     if(!account){
         res.json({message:"No account Find"})
     }
+    const balance=Math.round(account.balance)
 
     res.status(200).json({
         message:"balance find ",
-        balance:account.balance
+        balance:balance
     })
     }
     catch(err){
